@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8" />
+  <title>3D Tiles – Menu + Oferty + Panele</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+
+
+  <!-- CesiumJS 1.88 (biblioteka zewnętrzna) -->
+<!--  <script src="libs/cesium/Cesium.js"></script>
+<link href="libs/cesium/Widgets/widgets.css" rel="stylesheet" />  -->
+
+
+<script src="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Cesium.js" nonce="MTg5MjYyMzU1MSwyMjU5NDgxMjcw"></script>
+  <link href="https://cesium.com/downloads/cesiumjs/releases/1.132/Build/Cesium/Widgets/widgets.css" rel="stylesheet" />
+
+<script nonce="MTg5MjYyMzU1MSwyMjU5NDgxMjcw">
+  Cesium.Ion.defaultAccessToken = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJqdGkiOiJiNWE2ZDk0OC0wNDQ3LTQ5NDYtYWYyNy1kNzIxNzhkOGM5ZmEiLCJpZCI6MjA4ODg2LCJpYXQiOjE3MTMyNTUxNjh9.NUfq6JDQxVviq_lfBs9BJq2lkNpr0FGkW-4WhdO0Twk';
+</script>
+
+
+  <!-- Wewnętrzne style CSS -->
+  <link rel="stylesheet" href="css/style.css" />
+
+
+
+<!-- PANEL WŁAŚCIWOŚCI (prawy) -->
+
+
+
+</head>
+<body>
+  <div id="cesiumContainer"></div>
+
+  <!-- MENU (panel po lewej) -->
+  <div class="menu-panel" id="menuPanel">
+    <div class="menu-row">
+      <div class="menu-title">Menu</div>
+      <button id="menuToggle" class="toggle" aria-expanded="false">Rozwiń</button>
+    </div>
+
+    <div id="menuContent" style="display:none;">
+      <!-- ZAWSZE DOSTĘPNE -->
+      <div class="section">
+ <!--       <div class="section-title">Dostępne</div>   -->
+        <div class="section-body" style="display:block;">
+          <button class="btn" data-action="offers">Oferty sprzedaży</button>
+          <button class="btn" data-action="search">Szukaj</button>
+          <button class="btn" data-action="goto">Idź do..</button>
+        </div>
+      </div>
+
+      <!-- Po zalogowaniu -->
+      <div id="postLogin" style="display:none; margin-top:10px;">
+        <div class="section">
+
+          <div class="section-body" style="display:block;">
+            <button class="btn" data-action="homes">Moje domy</button>
+            <button class="btn" data-action="transactions">Moje transakcje</button>
+            <button class="btn" data-action="watchlist">Moje obserwacje</button>
+            <button class="btn" data-action="messages">Wiadomości</button>
+            <button class="btn" data-action="viewpoints">My Viewpoints</button>
+            <button class="btn" data-action="profile">Moje dane</button>
+            <button class="btn" id="logoutBtn" data-action="logout" style="background:#ef4444;">Wyloguj</button>
+          </div>
+            <h1>Welcome</h1>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- PANEL OFERT -->
+  <div class="offers-panel side-panel" id="offersPanel">
+    <!-- Sprzedaż -->
+    <div class="section">
+      <div class="section-header-row">
+        <div class="section-title section-trigger" data-target="#saleBody">Sprzedaż</div>
+        <button class="close-btn" data-close="offersPanel">Zamknij</button>
+      </div>
+      <div class="section-body" id="saleBody" style="display:none;">
+        <div id="saleFields" style="margin-top:8px;">
+          <div class="range-inline">
+            <label>Cena od</label><input class="input" id="saleMin" type="number">
+            <label>do</label><input class="input" id="saleMax" type="number">
+          </div>
+        </div>
+        <button class="toggle-btn" id="saleToggle" aria-pressed="false">Pokaż oferty sprzedaży</button>
+      </div>
+    </div>
+
+    <!-- Aukcje -->
+    <div class="section">
+      <div class="section-title section-trigger" data-target="#auctionBody">Aukcje</div>
+      <div class="section-body" id="auctionBody" style="display:none;">
+        <div id="auctionFields" style="margin-top:8px;">
+          <div class="range-inline">
+            <label>Cena od</label><input class="input" id="auctionMin" type="number">
+            <label>do</label><input class="input" id="auctionMax" type="number">
+          </div>
+        </div>
+        <button class="toggle-btn" id="auctionToggle" aria-pressed="false">Pokaż oferty aukcji</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- INNE PANELE (prawy panel ogólnego użytku oraz panel punktów widokowych) -->
+  <aside class="side-panel" id="appPanel">
+    <div class="panel-header">
+      <div class="panel-title" id="appPanelTitle">Panel</div>
+      <button class="panel-close" data-close="appPanel">Zamknij</button>
+    </div>
+    <div id="appPanelBody" style="margin-top:10px;"></div>
+  </aside>
+
+  <aside class="side-panel" id="viewpointsPanel">
+    <div class="panel-header">
+      <div class="panel-title">My Viewpoints</div>
+      <button class="panel-close" data-close="viewpointsPanel">Zamknij</button>
+    </div>
+    <div class="list" id="vpList"></div>
+    <div class="list-item" style="gap:8px">
+      <input class="input" id="vpName" placeholder="Nazwa ujęcia">
+      <button class="btn" id="vpSave" style="width:auto">Zapisz widok</button>
+    </div>
+  </aside>
+
+  <div id="toast">OK</div>
+
+  <!-- Wewnętrzne skrypty JS -->
+  <script type="module" src="js/init.js" nonce="MTg5MjYyMzU1MSwyMjU5NDgxMjcw"></script>
+  <script src="js/utils.js" nonce="MTg5MjYyMzU1MSwyMjU5NDgxMjcw"></script>
+  <script src="js/menu.js" nonce="MTg5MjYyMzU1MSwyMjU5NDgxMjcw"></script>
+  <script src="js/offers.js" nonce="MTg5MjYyMzU1MSwyMjU5NDgxMjcw"></script>
+  <script src="js/viewpoints.js" nonce="MTg5MjYyMzU1MSwyMjU5NDgxMjcw"></script>
+  <script src="js/featurePanel.2025.js" nonce="MTg5MjYyMzU1MSwyMjU5NDgxMjcw"></script>
+
+
+<aside class="feature-panel" id="featurePanel">
+  <div class="feature-header">
+    <div class="feature-title" id="featureTitle">Wybrany obiekt</div>
+    <button class="feature-close" id="featureClose">Zamknij</button>
+  </div>
+  <div class="props" id="featureProps"></div>
+  <div class="feature-actions">
+    <button class="btn-ghost" id="fpBuy">Kup</button>
+    <button class="btn-ghost" id="fpWatch">Obserwuj</button>
+    <button class="btn-ghost" id="fpMessage">Wyślij wiadomość</button>
+    <button class="btn-ghost" id="fpSetVP">Set Viewpoint</button>
+  </div>
+</aside>
+
+
+<script nonce="MTg5MjYyMzU1MSwyMjU5NDgxMjcw">
+  // Totalny anty-cache i globalny onerror
+  console.log('[HTML] końcówka body załadowana');
+  window.addEventListener('error', e => {
+    console.error('[window.onerror]', e.message, '@', e.filename + ':' + e.lineno + ':' + e.colno);
+  });
+</script>
+
+
+</body>
+</html>

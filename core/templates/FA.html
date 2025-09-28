@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <title>Second verification</title>
+    <link rel="stylesheet" href="{% static 'css/css.css' %}">
+</head>
+<body>
+    <form method="POST" action="/dash/">
+        {% csrf_token %}
+        <input id="2fa" name="code" type="text" placeholder="Enter your 2FA code"/>
+        <button type="submit">Verify</button>
+    </form>
+</body>
+</html>
